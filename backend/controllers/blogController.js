@@ -57,4 +57,3 @@ const deleteBlog = (req, res) => {
 };
 
 module.exports = { createBlog, getAllBlogs, updateBlog, deleteBlog };
-

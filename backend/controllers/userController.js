@@ -1,81 +1,44 @@
-const mysql = require('mysql2');
-const User = require('../models/User');
+const { pool } = require('../config/db');
 
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-});
-
-
-const getUserInfo = (req, res) => {
-    const userId = req.user.id;
-
-    db.query('SELECT id, username, role FROM users WHERE id = ?', [userId], (err, result) => {
-        if (err) {
-            return res.status(500).json({ message: 'Erreur lors de la récupération des informations utilisateur' });
+const userController = {
+    getUserInfo: async (req, res) => {
+        try {
+            const query = 'SELECT id, username, role FROM users WHERE id = $1';
+            const result = await pool.query(query, [req.user.userId]);
+            
+            if (result.rows.length === 0) {
+                return res.status(404).json({ message: 'Utilisateur non trouvé' });
+            }
+            
+            res.json(result.rows[0]);
+        } catch (error) {
+            res.status(500).json({ message: 'Erreur lors de la récupération des informations utilisateur', error: error.message });
         }
+    },
 
-        if (result.length === 0) {
-            return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    updateUserInfo: async (req, res) => {
+        try {
+            const { username } = req.body;
+            const query = 'UPDATE users SET username = $1 WHERE id = $2 RETURNING id, username, role';
+            const result = await pool.query(query, [username, req.user.userId]);
+            
+            if (result.rows.length === 0) {
+                return res.status(404).json({ message: 'Utilisateur non trouvé' });
+            }
+            
+            res.json(result.rows[0]);
+        } catch (error) {
+            res.status(500).json({ message: 'Erreur lors de la mise à jour des informations utilisateur', error: error.message });
         }
+    },
 
-        res.json(result[0]);
-    });
-};
+    getAllUsers: (req, res) => {
+        // Implementation needed
+    },
 
-
-const updateUserInfo = (req, res) => {
-    const { username, password, role } = req.body;
-    const userId = req.user.id;
-
-    let updateData = { username, role };
-
-    if (password) {
-        updateData.password = User.hashPassword(password);
+    deleteUser: (req, res) => {
+        // Implementation needed
     }
-
-    db.query('UPDATE users SET ? WHERE id = ?', [updateData, userId], (err, result) => {
-        if (err) {
-            return res.status(500).json({ message: 'Erreur lors de la mise à jour des informations' });
-        }
-
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Utilisateur non trouvé' });
-        }
-
-        res.json({ message: 'Informations mises à jour avec succès' });
-    });
 };
 
-
-const getAllUsers = (req, res) => {
-    db.query('SELECT id, username, role FROM users', (err, result) => {
-        if (err) {
-            return res.status(500).json({ message: 'Erreur lors de la récupération des utilisateurs' });
-        }
-
-        res.json(result);
-    });
-};
-
-
-const deleteUser = (req, res) => {
-    const userId = req.params.id;
-
-    db.query('DELETE FROM users WHERE id = ?', [userId], (err, result) => {
-        if (err) {
-            return res.status(500).json({ message: 'Erreur lors de la suppression de l\'utilisateur' });
-        }
-
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Utilisateur non trouvé' });
-        }
-
-        res.json({ message: 'Utilisateur supprimé avec succès' });
-    });
-};
-
-
-module.exports = { getUserInfo, updateUserInfo, getAllUsers, deleteUser };
+module.exports = userController;
