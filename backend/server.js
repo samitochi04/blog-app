@@ -1,47 +1,57 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const mysql = require('mysql2');
-const cors = require('cors');
 
-// Middleware
+require('dotenv').config();
+
+// Importer les autres modules nécessaires
+const express = require('express');
+const mysql = require('mysql2');
+const app = express();
+
+
+
+
+app.use(express.json());
+
+
+
 const authMiddleware = require('./middleware/authMiddleware');
 
-// Routes
+
 const authRoutes = require('./routes/auth');
 const blogRoutes = require('./routes/blogs');
 const userRoutes = require('./routes/users');
 
-dotenv.config();
 
-const app = express();
-app.use(cors());
-app.use(express.json());  // Pour pouvoir lire le corps des requêtes en JSON
 
-// Connexion à la base de données MySQL
-const db = mysql.createConnection({
+
+
+
+const connection = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    database: process.env.DB_NAME
 });
 
-db.connect((err) => {
+
+connection.connect((err) => {
     if (err) {
-        console.error('Erreur de connexion à la base de données: ', err);
-    } else {
-        console.log('Connecté à la base de données MySQL');
+        console.error('Erreur de connexion à la base de données:', err.stack);
+        return;
     }
+    console.log('Connecté à la base de données MySQL');
 });
 
-// Middleware pour la gestion de la connexion de l'utilisateur
-app.use('/api/blogs', authMiddleware); // Protection des routes blogs par auth
+
+
+
+app.use('/api/blogs', authMiddleware); 
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/blogs', blogRoutes);
 
-const port = process.env.PORT || 5000;
-app.listen(port, () => {
-    console.log(`Le serveur fonctionne sur le port ${port}`);
+// Lancer le serveur
+app.listen(process.env.PORT, () => {
+    console.log(`Serveur démarré sur le port ${process.env.PORT}`);
 });

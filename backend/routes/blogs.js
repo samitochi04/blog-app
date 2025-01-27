@@ -4,8 +4,8 @@ const blogController = require('../controllers/blogController');
 const roleMiddleware = require('../middleware/roleMiddleware');
 
 // Routes
-router.get('/', blogController.getAllBlogs); // Allblog 
-router.post('/', roleMiddleware('admin'), blogController.createBlog);
+router.get('/', blogController.getAllBlogs);
+router.post('/', blogController.createBlog);
 router.put('/:id', roleMiddleware('admin'), blogController.updateBlog);
 router.delete('/:id', roleMiddleware('admin'), blogController.deleteBlog);
 
