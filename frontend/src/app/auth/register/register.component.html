@@ -1,1 +1,36 @@
-<p>register works!</p>
+<div class="register-container">
+    <mat-card>
+      <h1>Register</h1>
+      <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+        <mat-form-field appearance="fill">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" placeholder="Enter your name" />
+          <mat-error *ngIf="registerForm.get('name')?.hasError('required')">
+            Name is required
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email" placeholder="Enter your email" />
+          <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
+            Email is required
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" type="password" placeholder="Create a password" />
+          <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
+            Password is required
+          </mat-error>
+        </mat-form-field>
+  
+        <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">
+          Register
+        </button>
+      </form>
+      <p>Already have an account? <a routerLink="/auth/login">Login</a></p>
+    </mat-card>
+  </div>
+  
