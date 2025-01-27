@@ -1,5 +1,4 @@
 # Blog App - Gestion des Blogs avec Angular et Node.js
-# Blog App - Gestion des Blogs avec Angular et Node.js
 Ce projet est une application de gestion de blogs utilisant Angular pour le frontend et Node.js avec PostgreSQL pour le backend. 
 Les utilisateurs peuvent consulter les blogs, tandis que les administrateurs peuvent créer, modifier et supprimer des blogs.
 ## Fonctionnalités
@@ -28,3 +27,20 @@ npm install
     - components/
     - services/
     - auth/
+# Démonstration des fonctionalités :
+1. Formulaire Admin :
+   
+![form-admin](https://github.com/user-attachments/assets/ac8eee19-42fd-4a40-989e-97faeafa39e4)
+-------------------------------------------------------------------------------------------------
+2. Formulaire connexion :
+   
+![form-connexion](https://github.com/user-attachments/assets/f33a5bb4-34a3-41bf-874e-9e3360f31251)
+--------------------------------------------------------------------------------------------------
+3. Interface de travail :
+   
+![it](https://github.com/user-attachments/assets/3fa750cb-4cb9-44b0-95d4-614cdb9047ca)
+--------------------------------------------------------------------------------------------------
+4.Interface d'accueil :
+
+![iu](https://github.com/user-attachments/assets/eee09b2f-d96c-4f6c-83a9-a9be0dc3c987)
+--------------------------------------------------------------------------------------------------
