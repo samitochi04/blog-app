@@ -9,6 +9,7 @@ const db = mysql.createConnection({
 });
 
 
+
 const getUserInfo = (req, res) => {
     const userId = req.user.id;
 
