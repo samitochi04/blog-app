@@ -9,7 +9,6 @@ const db = mysql.createConnection({
 });
 
 
-
 const getUserInfo = (req, res) => {
     const userId = req.user.id;
 
@@ -35,46 +34,48 @@ const updateUserInfo = (req, res) => {
 
     if (password) {
         updateData.password = User.hashPassword(password);
+    }
 
-        db.query('UPDATE users SET ? WHERE id = ?', [updateData, userId], (err, result) => {
-            if (err) {
-                return res.status(500).json({ message: 'Erreur lors de la mise à jour des informations' });
-            }
+    db.query('UPDATE users SET ? WHERE id = ?', [updateData, userId], (err, result) => {
+        if (err) {
+            return res.status(500).json({ message: 'Erreur lors de la mise à jour des informations' });
+        }
 
-            if (result.affectedRows === 0) {
-                return res.status(404).json({ message: 'Utilisateur non trouvé' });
-            }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé' });
+        }
 
-            res.json({ message: 'Informations mises à jour avec succès' });
-        });
-    };
-
-
-    const getAllUsers = (req, res) => {
-        db.query('SELECT id, username, role FROM users', (err, result) => {
-            if (err) {
-                return res.status(500).json({ message: 'Erreur lors de la récupération des utilisateurs' });
-            }
-
-            res.json(result);
-        });
-    };
+        res.json({ message: 'Informations mises à jour avec succès' });
+    });
+};
 
 
-    const deleteUser = (req, res) => {
-        const userId = req.params.id;
+const getAllUsers = (req, res) => {
+    db.query('SELECT id, username, role FROM users', (err, result) => {
+        if (err) {
+            return res.status(500).json({ message: 'Erreur lors de la récupération des utilisateurs' });
+        }
 
-        db.query('DELETE FROM users WHERE id = ?', [userId], (err, result) => {
-            if (err) {
-                return res.status(500).json({ message: 'Erreur lors de la suppression de l\'utilisateur' });
-            }
+        res.json(result);
+    });
+};
 
-            if (result.affectedRows === 0) {
-                return res.status(404).json({ message: 'Utilisateur non trouvé' });
-            }
 
-            res.json({ message: 'Utilisateur supprimé avec succès' });
-        });
-    };
+const deleteUser = (req, res) => {
+    const userId = req.params.id;
 
-    module.exports = { getUserInfo, updateUserInfo, getAllUsers, deleteUser };
+    db.query('DELETE FROM users WHERE id = ?', [userId], (err, result) => {
+        if (err) {
+            return res.status(500).json({ message: 'Erreur lors de la suppression de l\'utilisateur' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé' });
+        }
+
+        res.json({ message: 'Utilisateur supprimé avec succès' });
+    });
+};
+
+
+module.exports = { getUserInfo, updateUserInfo, getAllUsers, deleteUser };
