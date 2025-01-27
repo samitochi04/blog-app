@@ -1,0 +1,21 @@
+<!-- blog-list.component.html -->
+<div class="blog-list-container">
+  <div class="header">
+    <h2>Liste des BLOGS</h2>
+    <button *ngIf="isAdmin" routerLink="/blogs/create" class="create-btn">
+      Créer un nouvel BLOG
+    </button>
+  </div>
+  
+  <div class="blog-grid">
+    <div *ngFor="let blog of blogs" class="blog-card">
+      <h3>{{ blog.title }}</h3>
+      <p>{{ blog.content | slice:0:150 }}...</p>
+      <p class="author">Par {{ blog.username }}</p>
+      <div class="actions" *ngIf="isAdmin">
+        <button (click)="editBlog(blog.id.toString())" class="edit">Modifier</button>
+        <button (click)="deleteBlog(blog.id.toString())" class="delete">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>

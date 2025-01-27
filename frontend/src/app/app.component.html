@@ -1,11 +1,20 @@
 <header style="background-color: #1976d2; color: white; padding: 10px;">
-  <span>My Blog</span>
-  <span style="float: right;">
-    <a href="/auth/login" style="color: white; margin-right: 10px;">Login</a>
-    <a href="/auth/register" style="color: white;">Register</a>
+  <span style="cursor: pointer;" routerLink="/">My Blog</span>
+  <span style="float: right;" *ngIf="!authService.currentUserValue">
+    <a routerLink="/login" style="color: white; margin-right: 10px; cursor: pointer; text-decoration: none;">Login</a>
+    <a routerLink="/register" style="color: white; cursor: pointer; text-decoration: none;">Register</a>
+  </span>
+  <span style="float: right;" *ngIf="authService.currentUserValue">
+    <a (click)="logout()" style="color: white; cursor: pointer; text-decoration: none;">Déconnexion</a>
   </span>
 </header>
 
-<div class="content">
+<nav *ngIf="authService.currentUserValue" style="margin: 10px; padding: 10px;">
+  <a routerLink="/blogs" style="margin-right: 10px; text-decoration: none;">Blogs</a>
+  <a routerLink="/blogs/create" *ngIf="authService.isAdmin()" style="text-decoration: none;">Créer un Blog</a>
+</nav>
+
+<div class="content" style="padding: 20px;">
   <router-outlet></router-outlet>
 </div>
+

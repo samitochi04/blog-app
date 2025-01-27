@@ -1,0 +1,28 @@
+<div class="blog-form-container">
+  <h2>{{ isEditing ? 'Modifier' : 'Créer' }} un Blog </h2>
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="title">Titre</label>
+      <input 
+        type="text" 
+        id="title" 
+        [(ngModel)]="blog.title" 
+        name="title" 
+        required>
+    </div>
+    <div class="form-group">
+      <label for="content">Contenu</label>
+      <textarea 
+        id="content" 
+        [(ngModel)]="blog.content" 
+        name="content" 
+        rows="10" 
+        required></textarea>
+    </div>
+    <div class="button-group">
+      <button type="submit">{{ isEditing ? 'Mettre à jour' : 'Créer' }}</button>
+      <button type="button" (click)="cancel()" class="cancel">Annuler</button>
+    </div>
+    <p *ngIf="error" class="error">{{ error }}</p>
+  </form>
+</div> 
