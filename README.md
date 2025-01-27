@@ -9,7 +9,7 @@ Les utilisateurs peuvent consulter les blogs, tandis que les administrateurs peu
 - Consultation des blogs (tous les utilisateurs)
 ## Prérequis
 - Node.js (v14 ou supérieur)
-- PostgreSQL (base de données)
+- MySQL (base de données)
 - Angular CLI (v15 ou supérieur)
 ### Backend
 1. Clone le projet :
